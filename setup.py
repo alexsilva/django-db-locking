@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
-from pip._internal.req.req_file import parse_requirements
-from pip._internal.download import PipSession
+from locking.requirements_parser import parse
 import locking
 
 from os import path
 
+base_dir = path.dirname(path.abspath(__file__))
 
 # Lists of requirements and dependency links which are needed during runtime, testing and setup
 install_requires = []
@@ -12,19 +12,16 @@ tests_require = []
 dependency_links = []
 
 # Inject requirements from requirements.txt into setup.py
-requirements_file = parse_requirements(path.join('requirements', 'requirements.txt'), session=PipSession())
-for req in requirements_file:
-    install_requires.append(str(req.req))
-    if req.link:
-        dependency_links.append(str(req.link))
+requirements, links = parse(path.join(base_dir, 'requirements', 'requirements.txt'),
+                            links=True)
+install_requires.extend(requirements)
+dependency_links.extend(links)
 
 # Inject test requirements from requirements_test.txt into setup.py
-requirements_test_file = parse_requirements(path.join('requirements', 'requirements_test.txt'), session=PipSession())
-for req in requirements_test_file:
-    tests_require.append(str(req.req))
-    if req.link:
-        dependency_links.append(str(req.link))
-
+requirements, links = parse(path.join(base_dir, 'requirements', 'requirements_test.txt'),
+                            links=True)
+tests_require.extend(requirements)
+dependency_links.extend(links)
 
 setup(
     name="django-db-locking",
