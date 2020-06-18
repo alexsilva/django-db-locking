@@ -1,27 +1,34 @@
-from setuptools import setup, find_packages
-from locking.requirements_parser import parse
-import locking
-
 from os import path
+
+from setuptools import setup, find_packages
+
+import locking
 
 base_dir = path.dirname(path.abspath(__file__))
 
 # Lists of requirements and dependency links which are needed during runtime, testing and setup
-install_requires = []
-tests_require = []
+install_requires = ['Django<2.2']
+tests_require = [
+    'celery',
+    # freeze time
+    'freezegun',
+    # pytest
+    'pytest',
+    'pytest-django',
+    # coverage
+    'pytest-cov'
+    'coverage'
+    'coveralls'
+    # flake8
+    'flake8'
+    'pep8'
+    'pyflakes'
+    'mccabe'
+    'pep8-naming'
+    'flake8-print'
+    'flake8-debugger'
+]
 dependency_links = []
-
-# Inject requirements from requirements.txt into setup.py
-requirements, links = parse(path.join(base_dir, 'requirements', 'requirements.txt'),
-                            links=True)
-install_requires.extend(requirements)
-dependency_links.extend(links)
-
-# Inject test requirements from requirements_test.txt into setup.py
-requirements, links = parse(path.join(base_dir, 'requirements', 'requirements_test.txt'),
-                            links=True)
-tests_require.extend(requirements)
-dependency_links.extend(links)
 
 setup(
     name="django-db-locking",
@@ -35,7 +42,7 @@ setup(
     packages=find_packages('.'),
     include_package_data=True,
     install_requires=install_requires,
-    extras_require={'celery':  ["celery"] },
+    extras_require={'celery': ["celery"]},
     tests_require=tests_require,
     dependency_links=dependency_links,
     zip_safe=False,
