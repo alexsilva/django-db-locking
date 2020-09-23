@@ -7,7 +7,7 @@ import locking
 base_dir = path.dirname(path.abspath(__file__))
 
 # Lists of requirements and dependency links which are needed during runtime, testing and setup
-install_requires = ['Django<2.2']
+install_requires = []
 tests_require = [
     'celery',
     # freeze time
